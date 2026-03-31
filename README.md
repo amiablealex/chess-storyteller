@@ -1,8 +1,18 @@
 # Chess Storyteller
 
 A self-hosted web app that transforms chess games into calm, descriptive narratives. Feed it a PGN file and get back a storytelling script — no algebraic notation, just rich positional language.
+Stockfish analyses every move, then an LLM weaves the evaluation into a rich, human narrative you can read aloud or use as a video script.
 
 Built for [Calm Échecs](https://youtube.com/@calmechecs).
+
+## How It Works
+ 
+1. Paste or upload a PGN file from any chess game
+2. Stockfish analyses every position (move quality, key moments, evaluation swings)
+3. The analysis is sent to an LLM with a storytelling prompt — no notation, just descriptive positional language
+4. You get back a narrated story of the game, ready to read aloud or use as a script
+ 
+The app includes a built-in **teleprompter mode** for recording — full-screen auto-scroll with adjustable speed, styled for camera use.
 
 ## Quick Start
 
