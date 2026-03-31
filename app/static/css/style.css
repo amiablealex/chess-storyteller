@@ -70,6 +70,38 @@ html, body {
     opacity: 0.8;
 }
 
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.yt-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 200;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    transition: all var(--transition);
+}
+
+.yt-link:hover {
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+.yt-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+}
+
 .logo-title {
     font-size: 1.1rem;
     font-weight: 300;
