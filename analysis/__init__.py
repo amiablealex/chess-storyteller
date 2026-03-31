@@ -39,6 +39,7 @@ class GameAnalysis:
     black_player: str
     result: str
     opening: str
+    termination: str
     total_moves: int
     moves: list[MoveAnalysis] = field(default_factory=list)
     white_blunders: int = 0
@@ -186,6 +187,7 @@ def analyse_game(pgn_text: str, stockfish_path: str = "", depth: int = 20,
     black = game.headers.get("Black", "Black")
     result = game.headers.get("Result", "*")
     opening = game.headers.get("Opening", game.headers.get("ECO", "Unknown Opening"))
+    termination = game.headers.get("Termination", "")
 
     # Start engine
     engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
@@ -196,6 +198,7 @@ def analyse_game(pgn_text: str, stockfish_path: str = "", depth: int = 20,
         black_player=black,
         result=result,
         opening=opening,
+        termination=termination,
         total_moves=0,
     )
 
@@ -305,34 +308,79 @@ def analysis_to_prompt_context(analysis: GameAnalysis) -> str:
     lines = []
     lines.append(f"Game: {analysis.white_player} (White) vs {analysis.black_player} (Black)")
     lines.append(f"Result: {analysis.result}")
+    if analysis.termination:
+        lines.append(f"Termination: {analysis.termination}")
     lines.append(f"Opening: {analysis.opening}")
-    lines.append(f"Total moves: {analysis.total_moves}")
+    lines.append(f"Total half-moves: {analysis.total_moves}")
     lines.append("")
     lines.append(f"White errors: {analysis.white_blunders} blunders, {analysis.white_mistakes} mistakes, {analysis.white_inaccuracies} inaccuracies")
     lines.append(f"Black errors: {analysis.black_blunders} blunders, {analysis.black_mistakes} mistakes, {analysis.black_inaccuracies} inaccuracies")
     lines.append("")
-    lines.append("--- Move-by-Move Analysis ---")
+    lines.append("=" * 50)
+    lines.append("MOVE-BY-MOVE SEQUENCE (follow this order exactly)")
+    lines.append("=" * 50)
     lines.append("")
 
+    current_move_num = 0
     for i, move in enumerate(analysis.moves):
-        prefix = f"Move {move.move_number} ({move.side})"
-        eval_str = f"[eval: {move.eval_after / 100:.1f}]"
-        class_str = f"({move.classification})" if move.classification not in ("good",) else ""
+        # Group moves into numbered pairs
+        if move.side == "white":
+            current_move_num = move.move_number
+            lines.append(f"--- Move {current_move_num} ---")
 
-        line = f"{prefix}: {move.move_description} {eval_str} {class_str}"
+        side_label = "WHITE" if move.side == "white" else "BLACK"
+        eval_str = f"{move.eval_after / 100:+.1f}" if move.eval_after != 10000 and move.eval_after != -10000 else ("mate for white" if move.eval_after > 0 else "mate for black")
 
+        # Build factual description with explicit flags
+        desc = f"  {side_label}: {move.move_description}"
+
+        # Add explicit factual tags the LLM must respect
+        facts = []
+        if move.is_capture:
+            facts.append("THIS IS A CAPTURE")
+        else:
+            facts.append("this is NOT a capture")
         if move.is_check:
-            line += " — check!"
+            facts.append("THIS GIVES CHECK")
+        if move.is_castling:
+            facts.append("THIS IS CASTLING")
+        if board_result := _check_game_ending(i, analysis):
+            facts.append(board_result)
+
+        desc += f" [{', '.join(facts)}]"
+        desc += f" [eval: {eval_str}]"
+
+        if move.classification not in ("good",):
+            desc += f" [{move.classification.upper()}]"
+
+        lines.append(desc)
+
         if move.classification in ("blunder", "mistake") and move.best_move_description:
-            line += f"\n  → Better was: {move.best_move_description}"
+            lines.append(f"    → Better was: {move.best_move_description}")
 
-        lines.append(line.strip())
-
-        # Mark key moments
         if i in analysis.key_moments:
-            lines.append("  ★ KEY MOMENT — significant shift in the position")
+            lines.append(f"    ★ KEY MOMENT — significant shift in the position")
 
     lines.append("")
-    lines.append("--- End of Analysis ---")
+    lines.append("=" * 50)
+    lines.append("END OF SEQUENCE")
+    lines.append("=" * 50)
 
     return "\n".join(lines)
+
+
+def _check_game_ending(move_index: int, analysis: GameAnalysis) -> str:
+    """Check if this move ends the game."""
+    if move_index == len(analysis.moves) - 1:
+        if analysis.termination:
+            return f"GAME ENDS — {analysis.termination}"
+        result = analysis.result
+        if result == "1-0":
+            return "GAME ENDS — White wins"
+        elif result == "0-1":
+            return "GAME ENDS — Black wins"
+        elif result == "1/2-1/2":
+            return "GAME ENDS — Draw"
+        else:
+            return "GAME ENDS"
+    return ""

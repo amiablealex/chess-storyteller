@@ -53,13 +53,24 @@ def analyse():
             hash_mb=sf_config.get("hash_mb", 128),
         )
 
+        # Determine perspective (which side "we" are)
+        perspective = request.form.get("perspective", "auto")
+        if perspective == "auto":
+            usernames = [u.lower() for u in config.get("player", {}).get("usernames", [])]
+            if game_analysis.white_player.lower() in usernames:
+                perspective = "white"
+            elif game_analysis.black_player.lower() in usernames:
+                perspective = "black"
+            else:
+                perspective = "white"  # fallback
+
         # Step 2: Convert to prompt context
         analysis_text = analysis_to_prompt_context(game_analysis)
 
         # Step 3: Generate story via LLM
         provider = get_provider(config)
         system_prompt = load_system_prompt()
-        user_prompt = load_analysis_prompt(analysis_text, storytelling)
+        user_prompt = load_analysis_prompt(analysis_text, storytelling, perspective, game_analysis)
         story = provider.generate(system_prompt, user_prompt)
 
         return jsonify({
@@ -72,6 +83,7 @@ def analyse():
                 "total_moves": game_analysis.total_moves,
                 "provider": provider.provider_name,
                 "model": provider.model,
+                "perspective": perspective,
             },
         })
 

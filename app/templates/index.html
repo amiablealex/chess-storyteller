@@ -86,6 +86,15 @@
                 <!-- Story Controls -->
                 <div class="controls">
                     <div class="control-group">
+                        <label class="control-label">I played as</label>
+                        <div class="control-options" data-param="perspective">
+                            <button class="control-option active" data-value="auto">Auto</button>
+                            <button class="control-option" data-value="white">White</button>
+                            <button class="control-option" data-value="black">Black</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
                         <label class="control-label">Verbosity</label>
                         <div class="control-options" data-param="verbosity">
                             <button class="control-option" data-value="minimal">Minimal</button>
@@ -177,7 +186,7 @@
     <div class="teleprompter-overlay" id="teleprompterOverlay">
         <div class="teleprompter-controls">
             <label class="tp-speed-label">Speed</label>
-            <input type="range" id="tpSpeed" min="0.1" max="2" step="0.05" value="0.2" class="tp-speed">
+            <input type="range" id="tpSpeed" min="0.1" max="5" step="0.1" value="1.0" class="tp-speed">
             <button class="tp-close" onclick="toggleTeleprompter()">✕</button>
         </div>
         <div class="teleprompter-scroll" id="teleprompterScroll">

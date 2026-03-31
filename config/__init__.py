@@ -33,6 +33,9 @@ _DEFAULT_CONFIG = {
         "port": 5000,
         "debug": False,
     },
+    "player": {
+        "usernames": [],
+    },
 }
 
 _DEFAULT_MODELS = {

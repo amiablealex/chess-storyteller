@@ -20,4 +20,14 @@ Mood: {mood}
 {analysis}
 
 --- INSTRUCTIONS ---
+PERSPECTIVE: You are narrating from the point of view of {player_name}, who is playing as {perspective}. When you say "we", "our", and "us", you ALWAYS mean {player_name} ({perspective}). The other player, {opponent_name}, is "our opponent" or "they". This is critical — never confuse which side "we" are on. If {perspective} is black, then white's moves are what "our opponent" does, and black's moves are what "we" do. If {perspective} is white, the reverse.
+
+FACTUAL ACCURACY RULES (non-negotiable):
+1. Follow the move sequence EXACTLY as listed above. Do not reorder moves or describe events out of sequence.
+2. If a move is marked "this is NOT a capture", do NOT describe it as taking or capturing a piece. Only describe captures when explicitly marked "THIS IS A CAPTURE".
+3. If a move is marked "THIS GIVES CHECK", mention the check. If it is not marked as check, do NOT describe it as giving check.
+4. Never invent tactical events that are not in the analysis — no captures, checks, forks, pins, or sacrifices that aren't explicitly present in the move data above.
+5. You may skip over quiet or routine moves (especially at lower verbosity), but when you do describe a move, the factual details must match the analysis exactly.
+6. It is better to describe a move vaguely ("we improve our position") than to describe it with incorrect tactical detail.
+
 Tell the story of this game using the parameters above. Remember: no algebraic notation whatsoever. Describe every move positionally and descriptively. Begin the story naturally — do not start with "Here is the story" or similar preamble. Just begin telling it, as if you've already settled into the narration.

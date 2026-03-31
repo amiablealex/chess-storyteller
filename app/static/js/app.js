@@ -47,6 +47,7 @@ async function generateStory() {
     const verbosity = getActiveValue('verbosity');
     const length = getActiveValue('length');
     const mood = getActiveValue('mood');
+    const perspective = getActiveValue('perspective');
 
     // Build form data
     const formData = new FormData();
@@ -54,6 +55,7 @@ async function generateStory() {
     formData.append('verbosity', verbosity);
     formData.append('length', length);
     formData.append('mood', mood);
+    formData.append('perspective', perspective);
 
     // Loading state
     btn.classList.add('loading');

@@ -61,3 +61,10 @@ app:
   host: "0.0.0.0"
   port: 5000
   debug: false
+
+# --- Player Identity ---
+player:
+  # Your chess usernames (chess.com, lichess, etc.)
+  # Used to auto-detect which side you played
+  usernames:
+    - "alexb49"
