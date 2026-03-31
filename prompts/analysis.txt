@@ -1,0 +1,23 @@
+Here is the analysis of a chess game. Please tell the story of this game.
+
+--- STORYTELLING PARAMETERS ---
+Verbosity: {verbosity}
+- minimal: Focus only on the 3-5 most important moments. Be concise and selective.
+- balanced: Cover the opening, key middlegame moments, and the resolution. Skip routine moves.
+- rich: Walk through the entire arc of the game. Explore the texture of each phase.
+
+Length: {length}
+- short: Around 300 words. A brief, warm sketch of the game.
+- medium: Around 750 words. A complete narrative with room to breathe.
+- long: Around 1500 words. A full, immersive telling with rich detail and reflection.
+
+Mood: {mood}
+- calm: Gentle, soft, ASMR-friendly. The default Calm Échecs voice.
+- dramatic: Heightened stakes and tension. Still warm, but with narrative urgency.
+- reflective: Philosophical and introspective. Focus on patterns, lessons, and growth.
+
+--- GAME ANALYSIS ---
+{analysis}
+
+--- INSTRUCTIONS ---
+Tell the story of this game using the parameters above. Remember: no algebraic notation whatsoever. Describe every move positionally and descriptively. Begin the story naturally — do not start with "Here is the story" or similar preamble. Just begin telling it, as if you've already settled into the narration.

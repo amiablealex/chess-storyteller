@@ -1,0 +1,537 @@
+/* ============================================
+   Chess Storyteller — Calm Échecs
+   Dark, cosy, minimal. Outfit font throughout.
+   ============================================ */
+
+:root {
+    --bg-deep: #0a0d12;
+    --bg-primary: #0f1219;
+    --bg-surface: #1a1e2e;
+    --bg-surface-hover: #222840;
+    --border: #2a3050;
+    --border-subtle: #1e2338;
+    --text-primary: #d4dae8;
+    --text-secondary: #8b9fbe;
+    --text-muted: #576380;
+    --accent: #8b9fbe;
+    --accent-dim: rgba(139, 159, 190, 0.15);
+    --accent-glow: rgba(139, 159, 190, 0.08);
+    --error: #c4616a;
+    --success: #6a9f7e;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --transition: 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Layout ---- */
+
+.app {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    min-height: 100vh;
+}
+
+/* ---- Header ---- */
+
+.header {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.logo-icon {
+    width: 24px;
+    height: 30px;
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+.logo-title {
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+}
+
+.logo-subtitle {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 200;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: var(--text-muted);
+    margin-top: -2px;
+}
+
+/* ---- Panels ---- */
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.panel {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+}
+
+.panel-title {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+}
+
+/* ---- PGN Input ---- */
+
+.pgn-textarea {
+    width: 100%;
+    min-height: 140px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    color: var(--text-primary);
+    font-family: 'Outfit', monospace;
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.6;
+    resize: vertical;
+    transition: border-color var(--transition);
+}
+
+.pgn-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.pgn-textarea::placeholder {
+    color: var(--text-muted);
+    font-weight: 200;
+}
+
+.upload-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 200;
+    letter-spacing: 0.1em;
+}
+
+.upload-divider::before,
+.upload-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
+}
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.upload-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.file-name {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+    font-weight: 200;
+}
+
+/* ---- Controls ---- */
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-subtle);
+}
+
+.control-group {
+    flex: 1;
+    min-width: 160px;
+}
+
+.control-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.control-options {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.control-option {
+    flex: 1;
+    padding: 0.4rem 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.control-option:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.control-option.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+/* ---- Generate Button ---- */
+
+.generate-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.generate-btn:hover:not(:disabled) {
+    background: rgba(139, 159, 190, 0.25);
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.generate-btn .btn-loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.generate-btn.loading .btn-text { display: none; }
+.generate-btn.loading .btn-loading { display: inline-flex; }
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* ---- Output Panel ---- */
+
+.game-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+}
+
+.meta-vs {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 200;
+}
+
+.meta-result {
+    margin-left: auto;
+    font-weight: 400;
+    color: var(--accent);
+}
+
+.story-container {
+    min-height: 200px;
+}
+
+.story-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 200px;
+    color: var(--text-muted);
+    font-weight: 200;
+    font-size: 0.85rem;
+}
+
+.story-text {
+    display: none;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+}
+
+.story-text p {
+    margin-bottom: 1.25rem;
+}
+
+/* ---- Action Bar ---- */
+
+.action-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.action-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.action-btn.copied {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.provider-info {
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 200;
+    letter-spacing: 0.03em;
+}
+
+/* ---- Error Toast ---- */
+
+.error-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: var(--bg-surface);
+    border: 1px solid var(--error);
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    color: var(--error);
+    font-size: 0.82rem;
+    font-weight: 300;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 100;
+    max-width: 90%;
+}
+
+.error-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   Teleprompter Overlay
+   Full-screen, high-contrast reading mode
+   ============================================ */
+
+.teleprompter-overlay {
+    position: fixed;
+    inset: 0;
+    background: #050709;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+}
+
+.teleprompter-overlay.active {
+    display: flex;
+}
+
+.teleprompter-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background: rgba(15, 18, 25, 0.9);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.tp-speed-label {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.tp-speed {
+    width: 120px;
+    accent-color: var(--accent);
+}
+
+.tp-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.3rem;
+}
+
+.tp-close:hover {
+    color: var(--text-primary);
+}
+
+.teleprompter-scroll {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.teleprompter-text {
+    position: absolute;
+    width: 100%;
+    max-width: 720px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 40vh 2rem 60vh;
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 2;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    will-change: transform;
+}
+
+.teleprompter-hint {
+    padding: 0.6rem;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 200;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    background: rgba(15, 18, 25, 0.9);
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* Reading line indicator */
+.teleprompter-scroll::after {
+    content: '';
+    position: absolute;
+    top: 38%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 640px) {
+    .app {
+        padding: 1.25rem 1rem 3rem;
+    }
+
+    .panel {
+        padding: 1.25rem;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .teleprompter-text {
+        font-size: 1.2rem;
+        padding: 35vh 1.5rem 50vh;
+    }
+}

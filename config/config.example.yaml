@@ -1,0 +1,63 @@
+# Chess Storyteller Configuration
+# Copy this file to config.yaml and edit as needed.
+
+# --- LLM Provider ---
+llm:
+  # Options: anthropic, openai, google
+  provider: anthropic
+
+  # API key for your chosen provider
+  api_key: "YOUR_API_KEY_HERE"
+
+  # Model name (leave blank for sensible defaults)
+  # Anthropic: claude-sonnet-4-20250514
+  # OpenAI:    gpt-4o
+  # Google:    gemini-2.0-flash
+  model: ""
+
+  # Max tokens for the generated story
+  max_tokens: 4096
+
+  # Temperature (0.0 = focused, 1.0 = creative)
+  temperature: 0.7
+
+# --- Stockfish Engine ---
+stockfish:
+  # Path to Stockfish binary (leave blank to auto-detect)
+  path: ""
+
+  # Analysis depth (higher = slower but more accurate)
+  # 18-20 is ideal for blitz game review
+  depth: 20
+
+  # Threads for Stockfish (adjust to your CPU)
+  threads: 2
+
+  # Hash table size in MB
+  hash_mb: 128
+
+# --- Storytelling Style ---
+storytelling:
+  # Verbosity: minimal, balanced, rich
+  # minimal  — tight script, key moments only
+  # balanced — covers the arc with selective detail
+  # rich     — expansive, every phase explored
+  verbosity: balanced
+
+  # Length: short, medium, long
+  # short  — ~2 min read (~300 words)
+  # medium — ~5 min read (~750 words)
+  # long   — ~10 min read (~1500 words)
+  length: medium
+
+  # Mood: calm, dramatic, reflective
+  # calm       — soft, ASMR-friendly, gentle observations
+  # dramatic   — heightened tension, narrative stakes
+  # reflective — philosophical, lessons and patterns
+  mood: calm
+
+# --- Flask App ---
+app:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
