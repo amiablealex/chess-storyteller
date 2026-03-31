@@ -30,6 +30,7 @@ class MoveAnalysis:
     is_castling: bool
     best_move_san: Optional[str] = None
     best_move_description: Optional[str] = None
+    material_after: Optional[str] = None  # Material snapshot after captures
 
 
 @dataclass
@@ -291,6 +292,7 @@ def analyse_game(pgn_text: str, stockfish_path: str = "", depth: int = 20,
             is_castling=is_castling,
             best_move_san=best_move_san,
             best_move_description=best_move_desc,
+            material_after=_count_material(board) if is_capture else None,
         )
 
         analysis.moves.append(move_analysis)
@@ -375,6 +377,9 @@ def analysis_to_prompt_context(analysis: GameAnalysis) -> str:
 
         lines.append(desc)
 
+        if move.material_after:
+            lines.append(f"    [MATERIAL ON BOARD: {move.material_after}]")
+
         if move.classification in ("blunder", "mistake") and move.best_move_description:
             lines.append(f"    → Better was: {move.best_move_description}")
 
@@ -404,3 +409,23 @@ def _check_game_ending(move_index: int, analysis: GameAnalysis) -> str:
         else:
             return "GAME ENDS"
     return ""
+
+
+def _count_material(board: chess.Board) -> str:
+    """Count material for both sides, returning a human-readable summary."""
+    piece_order = [chess.QUEEN, chess.ROOK, chess.BISHOP, chess.KNIGHT, chess.PAWN]
+
+    def _count_side(color):
+        pieces = []
+        for piece_type in piece_order:
+            count = len(board.pieces(piece_type, color))
+            if count > 0:
+                name = _PIECE_NAMES[piece_type]
+                if count > 1:
+                    name += "s"
+                pieces.append(f"{count} {name}")
+        return ", ".join(pieces) if pieces else "king only"
+
+    white_material = _count_side(chess.WHITE)
+    black_material = _count_side(chess.BLACK)
+    return f"White: {white_material} | Black: {black_material}"
