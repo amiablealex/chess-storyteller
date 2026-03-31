@@ -63,52 +63,72 @@ _PIECE_NAMES = {
 _SQUARE_NAMES_DESCRIPTIVE = {}  # Populated on first use
 
 
-def _describe_square(square: int) -> str:
-    """Convert square index to descriptive name."""
-    file_names = ["a", "b", "c", "d", "e", "f", "g", "h"]
-    file_descriptions = [
-        "queenside rook file", "queenside knight file", "queenside bishop file",
-        "queen file", "king file", "kingside bishop file", "kingside knight file",
-        "kingside rook file"
-    ]
-    rank = chess.square_rank(square) + 1
+def _board_region(square: int) -> str:
+    """Classify a square into a board region."""
     file_idx = chess.square_file(square)
+    rank = chess.square_rank(square) + 1
+    if file_idx <= 2:
+        flank = "queenside"
+    elif file_idx >= 5:
+        flank = "kingside"
+    else:
+        flank = "centre"
+    if rank <= 2:
+        depth = "back ranks"
+    elif rank <= 4:
+        depth = "middle"
+    elif rank <= 6:
+        depth = "advanced"
+    else:
+        depth = "deep"
+    return f"{flank} {depth}"
 
-    rank_desc = {1: "back rank", 2: "second rank", 3: "third rank", 4: "fourth rank",
-                 5: "fifth rank", 6: "sixth rank", 7: "seventh rank", 8: "back rank"}
 
-    return f"the {file_descriptions[file_idx]} on the {rank_desc[rank]}"
+def _square_name_short(square: int) -> str:
+    """Short human-friendly square name like 'e4' area description."""
+    file_names = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    rank = chess.square_rank(square) + 1
+    file_letter = file_names[chess.square_file(square)]
+    return f"{file_letter}{rank}"
+
+
+def _describe_square(square: int) -> str:
+    """Convert square index to a concise descriptive name."""
+    region = _board_region(square)
+    short = _square_name_short(square)
+    return f"{region} ({short})"
 
 
 def _describe_move(board: chess.Board, move: chess.Move) -> str:
-    """Create a human-readable description of a move."""
+    """Create a concise, human-readable description of a move."""
     piece = board.piece_at(move.from_square)
     if piece is None:
         return "unknown move"
 
     piece_name = _PIECE_NAMES.get(piece.piece_type, "piece")
-    to_desc = _describe_square(move.to_square)
+    to_region = _board_region(move.to_square)
+    to_short = _square_name_short(move.to_square)
+    from_short = _square_name_short(move.from_square)
 
     # Castling
     if board.is_castling(move):
         if chess.square_file(move.to_square) > chess.square_file(move.from_square):
-            return "castles short, tucking the king to safety on the kingside"
+            return "castles kingside"
         else:
-            return "castles long, sending the king to the queenside"
+            return "castles queenside"
 
     # Capture
     captured = board.piece_at(move.to_square)
     if captured:
         captured_name = _PIECE_NAMES.get(captured.piece_type, "piece")
-        desc = f"the {piece_name} captures the {captured_name} on {to_desc}"
+        desc = f"{piece_name} on {from_short} takes {captured_name} on {to_short} ({to_region})"
     else:
-        from_desc = _describe_square(move.from_square)
-        desc = f"the {piece_name} moves from {from_desc} to {to_desc}"
+        desc = f"{piece_name} moves {from_short} to {to_short} ({to_region})"
 
     # Promotion
     if move.promotion:
         promo_name = _PIECE_NAMES.get(move.promotion, "piece")
-        desc += f", promoting to a {promo_name}"
+        desc += f", promotes to {promo_name}"
 
     return desc
 

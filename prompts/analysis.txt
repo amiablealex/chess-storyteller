@@ -29,5 +29,8 @@ FACTUAL ACCURACY RULES (non-negotiable):
 4. Never invent tactical events that are not in the analysis — no captures, checks, forks, pins, or sacrifices that aren't explicitly present in the move data above.
 5. You may skip over quiet or routine moves (especially at lower verbosity), but when you do describe a move, the factual details must match the analysis exactly.
 6. It is better to describe a move vaguely ("we improve our position") than to describe it with incorrect tactical detail.
+7. The grid references (e4, g3, f5 etc.) and region labels in the analysis are for YOUR reference to track pieces — NEVER include them in the story. Use only descriptive language: "the centre", "the kingside", "deep in our territory", etc.
 
-Tell the story of this game using the parameters above. Remember: no algebraic notation whatsoever. Describe every move positionally and descriptively. Begin the story naturally — do not start with "Here is the story" or similar preamble. Just begin telling it, as if you've already settled into the narration.
+Begin your response with a single short title on its own line, prefixed with "# ". The title should be poetic and abstract — evocative of the game's mood or turning point, not a literal description. Think "The Quiet Collapse" or "A Door Left Open", not "Blitz Game Analysis" or "Kingside Attack". The mood parameter should shape the title: calm titles are gentle and understated, dramatic titles have weight and tension, reflective titles are philosophical. Keep it under 8 words. Do not add a subtitle.
+
+After the title, leave a blank line, then tell the story of this game using the parameters above. Remember: no algebraic notation whatsoever. Describe every move positionally and descriptively. Begin the story naturally — do not start with "Here is the story" or similar preamble. Just begin telling it, as if you've already settled into the narration.
