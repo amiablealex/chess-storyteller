@@ -10,7 +10,7 @@ llm:
   api_key: "YOUR_API_KEY_HERE"
 
   # Model name (leave blank for sensible defaults)
-  # Anthropic: claude-sonnet-4-20250514
+  # Anthropic: claude-sonnet-4-6
   # OpenAI:    gpt-4o
   # Google:    gemini-2.0-flash
   model: ""
