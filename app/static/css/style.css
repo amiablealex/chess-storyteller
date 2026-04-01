@@ -679,6 +679,12 @@ html, body {
     color: var(--text-primary) !important;
 }
 
+.modal-danger {
+    background: rgba(196, 97, 106, 0.12) !important;
+    border-color: var(--error) !important;
+    color: var(--error) !important;
+}
+
 /* ============================================
    Stories Page
    ============================================ */
@@ -731,19 +737,47 @@ html, body {
 }
 
 .story-card {
-    display: block;
-    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: stretch;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all var(--transition);
+    transition: all 0.2s ease;
+    overflow: hidden;
 }
 
 .story-card:hover {
     border-color: var(--border);
     background: var(--bg-surface-hover);
+}
+
+.story-card-link {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.story-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    width: 44px;
+    background: none;
+    border: none;
+    border-left: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.story-delete-btn:hover {
+    color: var(--error);
+    background: rgba(196, 97, 106, 0.08);
 }
 
 .story-card-params {

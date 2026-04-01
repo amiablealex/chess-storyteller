@@ -67,15 +67,23 @@
 
                     <div class="game-group-stories">
                         {% for story in game.stories %}
-                        <a href="/?load={{ story._filename }}" class="story-card">
-                            <div class="story-card-params">
-                                <span class="story-tag">{{ story.params.mood }}</span>
-                                <span class="story-tag">{{ story.params.verbosity }}</span>
-                                <span class="story-tag">{{ story.params.length }}</span>
-                            </div>
-                            <div class="story-card-preview">{{ story.story[:150] }}...</div>
-                            <div class="story-card-date">{{ story.saved_at[:16] | replace('T', ' at ') }}</div>
-                        </a>
+                        <div class="story-card" id="card-{{ story._filename }}">
+                            <a href="/?load={{ story._filename }}" class="story-card-link">
+                                <div class="story-card-params">
+                                    <span class="story-tag">{{ story.params.mood }}</span>
+                                    <span class="story-tag">{{ story.params.verbosity }}</span>
+                                    <span class="story-tag">{{ story.params.length }}</span>
+                                </div>
+                                <div class="story-card-preview">{{ story.story[:150] }}...</div>
+                                <div class="story-card-date">{{ story.saved_at[:16] | replace('T', ' at ') }}</div>
+                            </a>
+                            <button class="story-delete-btn" onclick="deleteStory('{{ story._filename }}', event)" title="Delete story">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <polyline points="3,6 5,6 21,6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -83,5 +91,66 @@
             </section>
         </main>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal" style="display:none">
+        <div class="modal">
+            <p class="modal-text">Delete this story? This cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="action-btn modal-danger" onclick="confirmDelete()">Delete</button>
+                <button class="action-btn" onclick="cancelDelete()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    let pendingDeleteFilename = null;
+
+    function deleteStory(filename, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        pendingDeleteFilename = filename;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function cancelDelete() {
+        pendingDeleteFilename = null;
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    async function confirmDelete() {
+        document.getElementById('deleteModal').style.display = 'none';
+        const filename = pendingDeleteFilename;
+        pendingDeleteFilename = null;
+
+        if (!filename) return;
+
+        try {
+            const response = await fetch(`/stories/${filename}`, { method: 'DELETE' });
+            const data = await response.json();
+
+            if (response.ok) {
+                const card = document.getElementById(`card-${filename}`);
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    card.remove();
+                    document.querySelectorAll('.game-group-stories').forEach(group => {
+                        if (group.children.length === 0) {
+                            group.closest('.game-group').remove();
+                        }
+                    });
+                    if (document.querySelectorAll('.game-group').length === 0) {
+                        document.querySelector('.panel').innerHTML =
+                            '<h2 class="panel-title">Saved Stories</h2>' +
+                            '<div class="stories-empty"><p>No saved stories yet. Generate a story and save it to see it here.</p></div>';
+                    }
+                }, 200);
+            }
+        } catch (err) {
+            alert('Could not delete story.');
+        }
+    }
+    </script>
 </body>
 </html>
