@@ -55,6 +55,7 @@ html, body {
     margin-bottom: 3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-subtle);
+    position: relative;
 }
 
 .logo {
@@ -89,6 +90,9 @@ html, body {
     border: 1px solid var(--border-subtle);
     border-radius: 6px;
     transition: all var(--transition);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .yt-link:hover {
@@ -100,6 +104,34 @@ html, body {
     width: 16px;
     height: 16px;
     opacity: 0.6;
+}
+
+.header-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.7rem;
+    background: none;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 200;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.nav-btn:hover {
+    color: var(--text-secondary);
+    border-color: var(--border);
 }
 
 .logo-title {
@@ -566,4 +598,184 @@ html, body {
         font-size: 1.2rem;
         padding: 35vh 1.5rem 50vh;
     }
+}
+
+/* ============================================
+   Edit Mode
+   ============================================ */
+
+.story-edit {
+    width: 100%;
+    min-height: 300px;
+    background: var(--bg-surface);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1rem;
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.85;
+    resize: vertical;
+    margin-top: 1rem;
+}
+
+.story-edit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.action-btn.editing {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.action-btn.saved {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+/* ============================================
+   Modal
+   ============================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 9, 0.85);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-text {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.modal-confirm {
+    background: var(--accent-dim) !important;
+    border-color: var(--accent) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ============================================
+   Stories Page
+   ============================================ */
+
+.stories-empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-weight: 200;
+    font-size: 0.85rem;
+}
+
+.game-group {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.game-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.game-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.game-group-players {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.game-group-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 200;
+    color: var(--text-muted);
+}
+
+.game-group-stories {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.story-card {
+    display: block;
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition);
+}
+
+.story-card:hover {
+    border-color: var(--border);
+    background: var(--bg-surface-hover);
+}
+
+.story-card-params {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 0.4rem;
+}
+
+.story-tag {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.story-card-preview {
+    font-size: 0.8rem;
+    font-weight: 200;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.story-card-date {
+    font-size: 0.65rem;
+    font-weight: 200;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
 }
