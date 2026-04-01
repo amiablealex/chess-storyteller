@@ -100,13 +100,25 @@ def _describe_square(square: int) -> str:
     return f"{region} ({short})"
 
 
+def _piece_display_name(piece: chess.Piece, square: int) -> str:
+    """Get a descriptive piece name, including bishop colour."""
+    base_name = _PIECE_NAMES.get(piece.piece_type, "piece")
+    if piece.piece_type == chess.BISHOP:
+        # Determine square colour the bishop sits on
+        file_idx = chess.square_file(square)
+        rank_idx = chess.square_rank(square)
+        is_light_square = (file_idx + rank_idx) % 2 == 1
+        return f"{'light' if is_light_square else 'dark'}-squared bishop"
+    return base_name
+
+
 def _describe_move(board: chess.Board, move: chess.Move) -> str:
     """Create a concise, human-readable description of a move."""
     piece = board.piece_at(move.from_square)
     if piece is None:
         return "unknown move"
 
-    piece_name = _PIECE_NAMES.get(piece.piece_type, "piece")
+    piece_name = _piece_display_name(piece, move.from_square)
     to_region = _board_region(move.to_square)
     to_short = _square_name_short(move.to_square)
     from_short = _square_name_short(move.from_square)
@@ -121,7 +133,7 @@ def _describe_move(board: chess.Board, move: chess.Move) -> str:
     # Capture
     captured = board.piece_at(move.to_square)
     if captured:
-        captured_name = _PIECE_NAMES.get(captured.piece_type, "piece")
+        captured_name = _piece_display_name(captured, move.to_square)
         desc = f"{piece_name} on {from_short} takes {captured_name} on {to_short} ({to_region})"
     else:
         desc = f"{piece_name} moves {from_short} to {to_short} ({to_region})"
