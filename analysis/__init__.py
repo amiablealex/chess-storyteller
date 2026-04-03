@@ -108,7 +108,8 @@ def _piece_display_name(piece: chess.Piece, square: int) -> str:
         file_idx = chess.square_file(square)
         rank_idx = chess.square_rank(square)
         is_light_square = (file_idx + rank_idx) % 2 == 1
-        return f"{'light' if is_light_square else 'dark'}-squared bishop"
+        colour = "LIGHT" if is_light_square else "DARK"
+        return f"{colour}-SQUARED bishop"
     return base_name
 
 
